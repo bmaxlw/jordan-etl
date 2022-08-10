@@ -4,8 +4,8 @@ class Connector:
     def connect(self, 
                 dialect='oracle',    
                 sql_driver='cx_oracle',  
-                username='"mbondaruk"',  
-                password='adm2580',      
+                username=' ... ',        # Oracle username
+                password=' ... ',        # Oracle password    
                 host='localhost',        
                 port=1521,               # default Oracle port
                 service='orcl'):         # Oracle SID
