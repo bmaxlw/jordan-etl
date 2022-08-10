@@ -1,4 +1,3 @@
--- Merges into dimension and fact tables
 CREATE OR REPLACE PROCEDURE spr_MergeDimIndicators AS
 BEGIN
     -- Truncate mediator table, temporary carrying outdated records
@@ -40,10 +39,10 @@ BEGIN
     WHERE dim.ISCURRENT = 'Yes'
     ) tmp
     ON (fct.IndicatorKey = tmp.IndicatorKey 
-    AND fct.IndicatorID = tmp.IndicatorID)
+    AND fct.IndicatorID  = tmp.IndicatorID
+    AND fct.FromDate     = TO_DATE(TRIM(tmp.start_date), 'MM YYYY'))
     WHEN MATCHED THEN UPDATE SET
-        fct.FromDate       = TO_DATE(TRIM(tmp.start_date), 'MM YYYY'),
-        fct.ToDate         = CASE tmp.frequency 
+        fct.ToDate         =  CASE tmp.frequency 
                               WHEN 'Daily' THEN TO_DATE(TRIM(tmp.start_date), 'MM YYYY') + 1
                               WHEN 'Monthly' THEN ADD_MONTHS(TO_DATE(TRIM(tmp.start_date), 'MM YYYY'), 1)
                               WHEN 'Quarterly' THEN ADD_MONTHS(TO_DATE(TRIM(tmp.start_date), 'MM YYYY'), 3)
